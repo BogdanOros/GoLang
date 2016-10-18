@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;Game&gt;">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/game" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/handlers" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/resources" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/model" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/services" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/tools" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/game" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/handlers" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/resources" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/model" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/services" />
+      <root url="file://$PROJECT_DIR$/../../GoLang/Game/src/tools" />
+    </SOURCES>
+    <excluded>
+      <root url="file://$PROJECT_DIR$" />
+    </excluded>
+  </library>
+</component>

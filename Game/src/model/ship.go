@@ -1,5 +1,7 @@
 package model
 
+import "../resources"
+
 type Ship struct {
 	Length int
 	Direction int
@@ -9,7 +11,7 @@ type Ship struct {
 func ShipInit() Ship {
 	return Ship {
 		Length: 3,
-		Direction: 0,
+		Direction: resources.DIR_X,
 		Alive: true,
 	}
 }
