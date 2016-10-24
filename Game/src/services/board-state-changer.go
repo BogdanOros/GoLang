@@ -1,0 +1,38 @@
+package services
+
+import (
+	"../model"
+	"../resources"
+)
+
+func PlaceShip(board *model.Board, ship *model.Ship) {
+	switch ship.Direction {
+	case resources.DIR_X:
+		for i := board.CurrentX; i < board.CurrentX + ship.Length; i++ {
+			board.Board[board.CurrentY][i] = 1
+		}
+	case resources.DIR_Y:
+		for j := board.CurrentY; j < board.CurrentY + ship.Length; j++ {
+			board.Board[j][board.CurrentX] = 1
+		}
+	}
+}
+
+func CheckPlacingAvailability(board *model.Board, ship *model.Ship) bool{
+	isAbleToPlace := true
+	switch ship.Direction {
+	case resources.DIR_X:
+		for i := board.CurrentX; i < board.CurrentX + ship.Length && isAbleToPlace; i++ {
+			if board.Board[board.CurrentY][i] == 1 {
+				isAbleToPlace = false
+			}
+		}
+	case resources.DIR_Y:
+		for j := board.CurrentY; j < board.CurrentY + ship.Length && isAbleToPlace; j++ {
+			if board.Board[j][board.CurrentX] == 1 {
+				isAbleToPlace = false
+			}
+		}
+	}
+	return isAbleToPlace
+}

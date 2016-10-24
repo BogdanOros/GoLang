@@ -12,14 +12,15 @@ func GameLoop () {
 	handler := handlers.KeyboardHandlerInit()
 	go handler.WaitingForKey()
 
+	session := gameProcessPreConfiguration()
+
+	shipPlacingProcess(&session, handler)
+
+	board1 := model.BoardInit()
 	tools.ClearScreen()
+	tools.DrawBoard(board1)
+	handleClicks(handler, &board1)
 
-	board := model.BoardInit()
-	ship := model.ShipInit()
-	tools.DrawBoardWithShipMoving(board, ship)
-
-	handleClicksWithShip(handler, &board, &ship)
-	//handleClicks(handler, &board)
 }
 
 func handleClicks(handler handlers.KeyboardHandler, board *model.Board) {
@@ -48,14 +49,45 @@ func handleClicks(handler handlers.KeyboardHandler, board *model.Board) {
 	}
 }
 
-func handleClicksWithShip(handler handlers.KeyboardHandler, board *model.Board, ship *model.Ship) {
+func handleClicksWithShip(session *GameSession, handler handlers.KeyboardHandler, board *model.Board, ship *model.Ship) {
 	for {
 		clicked := <- handler.GetKeyHandler()
-		needToRepaint := handlers.ProcessShipMovingKbHit(clicked, board, ship)
-		if needToRepaint {
-			tools.ClearScreen()
-			tools.DrawBoardWithShipMoving(*board, *ship)
+		needToRepaint, shipPlaced := handlers.ProcessShipMovingKbHit(clicked, board, ship)
+		if needToRepaint && !shipPlaced{
+			repaintBoard(board, ship)
+			repaintInfo(session, "Ship placing process")
+		} else if needToRepaint && shipPlaced {
+			repaintBoard(board, ship)
+			repaintInfo(session, "Ship placing process finished")
+			break
 		}
 	}
+}
+
+func repaintBoard(board *model.Board, ship *model.Ship) {
+	tools.ClearScreen()
+	tools.DrawBoardWithShipMoving(*board, *ship)
+}
+
+func repaintInfo(session *GameSession, info string) {
+	tools.DrawInterface(session.FirstPlayer, session.SecondPlayer, info)
+}
+
+func gameProcessPreConfiguration() GameSession{
+	gameSession := GameSessionInit("First", "Second")
+	gameSession.SetCurrentPlayer(&gameSession.FirstPlayer)
+	return gameSession
+}
+
+func shipPlacingProcess(session *GameSession, handler handlers.KeyboardHandler) {
+	currentUser := session.GetCurrentPlayer()
+	for i:=0; i < len(currentUser.ShipsHolder.ShipsArray); i++ {
+		currentUser.Board.ResetInitialPos()
+		ship := currentUser.ShipsHolder.GetShip(i)
+		repaintBoard(&currentUser.Board, &ship)
+		repaintInfo(session, "Ship placed")
+		handleClicksWithShip(session, handler, &currentUser.Board, &ship)
+	}
+	currentUser.Readiness = true
 }
 

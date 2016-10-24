@@ -74,7 +74,7 @@ func getBorder(clicked int, ship *model.Ship) int{
 		case resources.DIR_X:
 			return resources.BoardSize - 1
 		case resources.DIR_Y:
-			return resources.BoardSize - 1 - ship.Length
+			return resources.BoardSize - ship.Length
 		}
 	case resources.Left:
 		switch ship.Direction {
@@ -85,16 +85,16 @@ func getBorder(clicked int, ship *model.Ship) int{
 	case resources.Right:
 		switch ship.Direction {
 		case resources.DIR_X:
-			return resources.BoardSize - 1 - ship.Length
+			return resources.BoardSize - ship.Length
 		case resources.DIR_Y:
 			return resources.BoardSize - 1
 		}
 	case resources.Press:
 		switch ship.Direction {
 		case resources.DIR_X:
-			return resources.BoardSize - 1 - ship.Length
+			return resources.BoardSize  - ship.Length
 		case resources.DIR_Y:
-			return resources.BoardSize - 1 - ship.Length
+			return resources.BoardSize  - ship.Length
 		}
 	}
 	return resources.ERROR

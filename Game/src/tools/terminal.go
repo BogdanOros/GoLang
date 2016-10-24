@@ -3,6 +3,7 @@ package tools
 import (
 "os/exec"
 "os"
+	"strconv"
 )
 
 func ReadKey() int{
@@ -20,6 +21,13 @@ func ClearScreen() error{
 	cmd.Stdout = os.Stdout
 	return cmd.Run()
 }
+
+func GoToXY (x int, y int) error {
+	cmd := exec.Command("tput","cup", strconv.Itoa(x), strconv.Itoa(y))
+	cmd.Stdout = os.Stdout
+	return cmd.Run()
+}
+
 
 func tput(args ...string) error {
 	cmd := exec.Command("tput", args...)

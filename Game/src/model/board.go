@@ -1,7 +1,7 @@
 package model
 
 type Board struct {
-	board [10][10] int
+	Board [10][10] int
 	CurrentX, CurrentY int
 }
 
@@ -10,6 +10,11 @@ func BoardInit() Board {
 }
 
 func (board Board) GetCell(x, y int) int {
-	return board.board[x][y]
+	return board.Board[x][y]
+}
+
+func (board *Board) ResetInitialPos() {
+	board.CurrentX = 0
+	board.CurrentY = 0
 }
 

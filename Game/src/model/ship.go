@@ -8,9 +8,9 @@ type Ship struct {
 	Alive bool
 }
 
-func ShipInit() Ship {
+func ShipInit(len int) Ship {
 	return Ship {
-		Length: 3,
+		Length: len,
 		Direction: resources.DIR_X,
 		Alive: true,
 	}
