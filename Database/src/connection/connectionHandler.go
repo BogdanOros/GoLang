@@ -7,15 +7,17 @@ import (
 	prop "./../resources"
 	errorHandler "./../errors"
 	handler "./../query_handler"
+	repo "./../database"
 )
 
 func StartConnection() {
 	listener := createListener()
+	repo := repo.RepoInit()
 	defer listener.Close()
 	for {
 		connection, err := listener.Accept()
 		errorHandler.HandleErrorDefault(err, "Error during new client acception.")
-		go handleConnection(connection)
+		go handleConnection(connection, &repo)
 	}
 }
 
@@ -26,19 +28,19 @@ func createListener() net.Listener {
 	return listener
 }
 
-func handleConnection(conn net.Conn) {
+func handleConnection(conn net.Conn, repository *repo.DatabaseRepository) {
 	for {
 		buffer := bufio.NewReader(conn)
 		for {
-			query, err := buffer.ReadString(prop.BUFFER_DELIMETER)
+			query, err := buffer.ReadString('\n')
 			errorHandler.HandleErrorClient(err, "Error during message reading.", conn)
-			go handleQuery(conn, query)
+			go handleQuery(conn, query, repository)
 		}
 
 	}
 }
 
-func handleQuery(conn net.Conn, query string) {
+func handleQuery(conn net.Conn, query string, repository *repo.DatabaseRepository) {
 	commands := strings.Fields(query)
-	handler.BuildQuery(commands)
+	handler.BuildQuery(commands, repository, conn)
 }

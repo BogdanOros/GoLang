@@ -1,15 +1,13 @@
 package query_handler
 
-import "fmt"
+import (
+	"fmt"
+	repo "./../database"
+	"net"
+)
 
-func BuildQuery(input [] string) {
+func BuildQuery(input [] string, repository *repo.DatabaseRepository, conn net.Conn) {
 	actions := ActionHolderInit()
-}
-
-func queryPart (a ... interface {}) {
-	fmt.Println(a)
-}
-
-func getCorrectFormattedQuery(input [] string) string {
-	return input[0]
+	result := actions.execute(input, repository, conn)
+	fmt.Println("ACTION RESULT: ", result)
 }
