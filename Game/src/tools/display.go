@@ -6,11 +6,16 @@ import (
 	"../resources"
 )
 
-func DrawInterface(firstPlayer, secondPlayer model.Player, gameInfo string) {
-	GoToXY(11, 0);
-	fmt.Println("CurrentGameInformation: ", gameInfo);
+func DrawInterface(firstPlayer, secondPlayer, currentPlayer model.Player, gameInfo string) {
+	GoToXY(11, 0)
+	fmt.Println(resources.INFORMATION, gameInfo)
+	fmt.Println("Current player -", currentPlayer.Name, "\n")
 	fmt.Println("First player - ", firstPlayer.Name, " : ", firstPlayer.Readiness)
 	fmt.Println("Second player - ", secondPlayer.Name, " : ", secondPlayer.Readiness)
+}
+
+func ShowShipStateInfo(ship model.Ship) {
+	fmt.Println("SHIP DAMAGED")
 }
 
 func DrawBoard (board model.Board) {
@@ -19,7 +24,7 @@ func DrawBoard (board model.Board) {
 			if board.CurrentX == j && board.CurrentY == i {
 				fmt.Print(" _ ")
 			} else {
-				fmt.Print(" . ")
+				fmt.Print(getSymbolByCell(board.GetCell(i, j)))
 			}
 		}
 		fmt.Println()
@@ -55,10 +60,14 @@ func DrawBoardWithShipMoving (board model.Board, ship model.Ship) {
 
 func getSymbolByCell(cell int) string {
 	switch cell {
-	case 0:
+	case resources.NoShipCell:
 		return " . "
-	case 1:
+	case resources.ShipCell:
 		return " # "
+	case resources.ShootedNoShipCell:
+		return " o "
+	case resources.ShootedShipCell:
+		return " X "
 	default:
 		return "   "
 	}

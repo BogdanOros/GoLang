@@ -3,7 +3,6 @@ package services
 import (
 	"../model"
 	"../resources"
-	"fmt"
 )
 
 func MoveUp(board *model.Board, ship *model.Ship) bool {
@@ -44,14 +43,12 @@ func ChangeDirection(board *model.Board, ship *model.Ship) bool{
 	switch ship.Direction {
 	case resources.DIR_X:
 		if board.CurrentY <= border {
-			fmt.Print(ship.Direction)
 			ship.Direction = resources.DIR_Y
 			return true
 		}
 		return false
 	case resources.DIR_Y:
 		if board.CurrentX <= border {
-			fmt.Print(ship.Direction)
 			ship.Direction = resources.DIR_X
 			return true
 		}

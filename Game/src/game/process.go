@@ -4,6 +4,7 @@ import (
 	"../tools"
 	"../model"
 	"../handlers"
+	"fmt"
 	"../resources"
 )
 
@@ -14,38 +15,48 @@ func GameLoop () {
 
 	session := gameProcessPreConfiguration()
 
+	session.CurrentPlayer = &session.FirstPlayer
 	shipPlacingProcess(&session, handler)
 
-	board1 := model.BoardInit()
-	tools.ClearScreen()
-	tools.DrawBoard(board1)
-	handleClicks(handler, &board1)
+	session.CurrentPlayer = &session.SecondPlayer
+	shipPlacingProcess(&session, handler)
 
+	session.CurrentPlayer = &session.FirstPlayer
+
+	tools.ClearScreen()
+	tools.DrawBoard(session.CurrentPlayer.ShootingBoard)
+	handleClicks(&session, handler)
+
+	tools.ClearScreen()
+	fmt.Println("Winner - ", session.CurrentPlayer.Name)
 }
 
-func handleClicks(handler handlers.KeyboardHandler, board *model.Board) {
+func handleClicks(session *GameSession, handler handlers.KeyboardHandler) {
+
 	for {
 		clicked := <- handler.GetKeyHandler()
-		switch clicked {
-		case resources.Up:
-			if board.CurrentY != 0 {
-				board.CurrentY--
-			}
-		case resources.Down:
-			if board.CurrentY != 9 {
-				board.CurrentY++
-			}
-		case resources.Left:
-			if board.CurrentX != 0 {
-				board.CurrentX--
-			}
-		case resources.Right:
-			if board.CurrentX != 9 {
-				board.CurrentX++
-			}
+
+		result :=
+			handlers.ProcessShootingProcess(clicked, &session.CurrentPlayer.ShipsHolder, &session.CurrentPlayer.Board, &session.CurrentPlayer.ShootingBoard)
+
+		if result.RemoveHealth {
+			session.CurrentPlayer.Health -= resources.Damaged
 		}
-		tools.ClearScreen()
-		tools.DrawBoard(*board)
+
+		if session.CurrentPlayer.Health == resources.Dead {
+			break;
+		}
+
+		if result.ChangePlayer{
+			changeCurrentPlayer(session)
+		}
+
+		if result.NeedToRepaint {
+			tools.ClearScreen()
+			tools.DrawBoard(session.CurrentPlayer.ShootingBoard)
+			repaintInfo(session, "Press SPACE to shoot")
+		}
+
 	}
 }
 
@@ -70,24 +81,31 @@ func repaintBoard(board *model.Board, ship *model.Ship) {
 }
 
 func repaintInfo(session *GameSession, info string) {
-	tools.DrawInterface(session.FirstPlayer, session.SecondPlayer, info)
+	tools.DrawInterface(session.FirstPlayer, session.SecondPlayer, *session.CurrentPlayer, info)
 }
 
 func gameProcessPreConfiguration() GameSession{
 	gameSession := GameSessionInit("First", "Second")
-	gameSession.SetCurrentPlayer(&gameSession.FirstPlayer)
 	return gameSession
 }
 
 func shipPlacingProcess(session *GameSession, handler handlers.KeyboardHandler) {
-	currentUser := session.GetCurrentPlayer()
-	for i:=0; i < len(currentUser.ShipsHolder.ShipsArray); i++ {
-		currentUser.Board.ResetInitialPos()
-		ship := currentUser.ShipsHolder.GetShip(i)
-		repaintBoard(&currentUser.Board, &ship)
+	for i:=0; i < len(session.CurrentPlayer.ShipsHolder.ShipsArray); i++ {
+		session.CurrentPlayer.Board.ResetInitialPos()
+		ship := session.CurrentPlayer.ShipsHolder.GetShip(i)
+		session.CurrentPlayer.ShipsHolder.SetIndex(i)
+		repaintBoard(&session.CurrentPlayer.Board, &ship)
 		repaintInfo(session, "Ship placed")
-		handleClicksWithShip(session, handler, &currentUser.Board, &ship)
+		handleClicksWithShip(session, handler, &session.CurrentPlayer.Board, &ship)
 	}
-	currentUser.Readiness = true
+	session.CurrentPlayer.Readiness = true
 }
 
+func changeCurrentPlayer(session *GameSession) {
+	if (*session.CurrentPlayer == session.FirstPlayer) {
+		session.CurrentPlayer = &session.SecondPlayer
+	} else {
+		session.CurrentPlayer = &session.FirstPlayer
+	}
+	session.CurrentPlayer.ShootingBoard.ResetInitialPos()
+}

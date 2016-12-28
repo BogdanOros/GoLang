@@ -1,7 +1,13 @@
 package model
 
+import "../resources"
+
+type Cell struct {
+	ShipCell, BoardCell int
+}
+
 type Board struct {
-	Board [10][10] int
+	Board [resources.BoardSize][resources.BoardSize] Cell
 	CurrentX, CurrentY int
 }
 
@@ -10,7 +16,7 @@ func BoardInit() Board {
 }
 
 func (board Board) GetCell(x, y int) int {
-	return board.Board[x][y]
+	return board.Board[x][y].BoardCell
 }
 
 func (board *Board) ResetInitialPos() {

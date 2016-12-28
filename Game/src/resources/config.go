@@ -17,3 +17,12 @@ const ERROR = 0
 const MenuState = -1
 const ShipPlacingState = 0
 const PlayingState = 1
+
+const NoShipCell = 0
+const ShipCell = 1
+
+const ShootedNoShipCell = 10
+const ShootedShipCell = 11
+
+const Dead = 0
+const Damaged = -1
