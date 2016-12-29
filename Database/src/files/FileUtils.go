@@ -52,3 +52,10 @@ func ReadCollectionFromFile(filename string) ([] string, error) {
 		return [] string {res.FILE_NOT_FOUND}, errors.New(res.FILE_NOT_FOUND)
 	}
 }
+
+func RewriteToFile(filename string, fields [] string, entities[]map[string]string) {
+	CreateFile(filename, fields)
+	for _, elem := range entities {
+		SaveToFile(filename, elem)
+	}
+}

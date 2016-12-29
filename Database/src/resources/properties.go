@@ -26,4 +26,7 @@ const (
 	SELECT_NOT_VALID = "Invalid selection query. "
 	SELECTION_SUCCESS = "Selection finished. "
 
+	DELETE_NOT_VALID = "Invalid delete query. "
+	DELETE_SUCCESS = "Delete finished. "
+
 )

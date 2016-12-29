@@ -45,3 +45,13 @@ func FormatEntityToString(collection coll.Collection, res []map[string]string) s
 	}
 	return result
 }
+
+func DeleteEntitiesFromArray(source []map[string]string, field, query string)  []map[string]string {
+	result := [] map [string] string {}
+	for _, elem := range(source) {
+		if elem[field] != query {
+			result = append(result, elem)
+		}
+	}
+	return result
+}

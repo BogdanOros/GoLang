@@ -15,6 +15,7 @@ func ActionHolderInit () ActionHolder {
 		"create" : CreateAction{Keyword: [2]string{"create", "as"}, MinLength: 3}.execute,
 		"insert" : InsertAction{Keyword: [3]string{"insert", "into", "values"}, MinLength: 4}.execute,
 		"select" : SelectAction{Keyword: [3]string{"select", "from" , "where"}, MinLength: 2}.execute,
+		"delete" : DeleteAction{Keyword: [3]string{"delete", "from", "where"}, MinLength:4}.execute,
 	}
 	return ActionHolder{
 	 	actions: actions,
