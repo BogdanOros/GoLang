@@ -1,4 +1,2 @@
-name surname
-{"name":"Bogdan","surname":"Oros"}
-{"name":"Nikita","surname":"Myk"}
-{"name":"Erik","surname":"Gimik"}
+id name age
+{"age":"12","id":"2","name":"Bogdan"}

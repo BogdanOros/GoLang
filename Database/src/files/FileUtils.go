@@ -38,3 +38,17 @@ func ReadCollectionType(filename string) (string, error) {
 		return res.FILE_NOT_FOUND, errors.New(res.FILE_NOT_FOUND)
 	}
 }
+
+func ReadCollectionFromFile(filename string) ([] string, error) {
+	result := [] string {}
+	if file, err := os.Open(filename + res.FILE_EXTENSION); err == nil {
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			result = append(result, scanner.Text())
+		}
+		return result, nil
+	} else {
+		return [] string {res.FILE_NOT_FOUND}, errors.New(res.FILE_NOT_FOUND)
+	}
+}

@@ -23,4 +23,7 @@ const (
 	INSERT_NOT_VALID_ENTITY = "Invalid entity format was proposed. "
 	INSERT_SUCCESS = "Insertion finished. "
 
+	SELECT_NOT_VALID = "Invalid selection query. "
+	SELECTION_SUCCESS = "Selection finished. "
+
 )

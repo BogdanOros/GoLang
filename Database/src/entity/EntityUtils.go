@@ -3,6 +3,9 @@ package entity
 import (
 	coll "./../database"
 	"errors"
+	//"strings"
+	"fmt"
+	"encoding/json"
 )
 
 func CreateMapEntity(collection coll.Collection, input[] string) (map[string] string, error) {
@@ -14,4 +17,31 @@ func CreateMapEntity(collection coll.Collection, input[] string) (map[string] st
 		entity[element] = input[i]
 	}
 	return entity, nil
+}
+
+func createEntityFromSlice(input string) (map[string] string) {
+	entity := make(map[string] string)
+	json.Unmarshal([]byte(input), &entity)
+	return entity
+}
+
+func CreateMapEntityList(collection coll.Collection, input[] string) []map[string] string {
+	result := []map[string] string {}
+	fmt.Println(input)
+	for _, elem := range (input) {
+		entity := createEntityFromSlice(elem)
+		result = append(result, entity)
+	}
+	return result
+}
+
+func FormatEntityToString(collection coll.Collection, res []map[string]string) string {
+	result := ""
+	for _, elem := range(res) {
+		for _, field := range(collection.Fields) {
+			result += field + " : " + elem[field] + " ; "
+		}
+		result += " \n"
+	}
+	return result
 }

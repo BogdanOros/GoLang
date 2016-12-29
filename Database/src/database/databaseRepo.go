@@ -34,3 +34,12 @@ func (repo *DatabaseRepository) GetCollection(collection string) (Collection, er
 	}
 	return coll, nil
 }
+
+func (repo *DatabaseRepository) ReadCollection(collection string) ([] string, error){
+	res, err := fileUtils.ReadCollectionFromFile(collection)
+	if err != nil {
+		return [] string {}, err
+	}
+	repo.CreateCollection(collection, strings.Fields(res[0]))
+	return res[1: ], nil
+}
